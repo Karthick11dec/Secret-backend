@@ -4,7 +4,6 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
-const Mail = require('nodemailer/lib/mailer');
 
 const router = express();
 router.use(express.json());

@@ -41,6 +41,9 @@ const mailMessage = (url) => {
     );
 }
 
+router.get('/',async(req,res)=>{
+    res.send("secret message service")
+})
 
 router.post('/create-message', async (req, res) => {
     try {

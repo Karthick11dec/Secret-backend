@@ -109,7 +109,7 @@ router.delete('/delete-message', async (req, res) => {
             const compare = await bcrypt.compare(req.body.password, secret.password);
             if (compare) {
                 await db.collection(Docs).findOneAndDelete({ key: req.body.secretKey });
-                res.status(200).json({ message: `${secret.mail}'s - message has been deleted successfully.` });
+                res.status(200).json({ message: 'message has been deleted successfully.' });
             } else {
                 res.status(401).json({ message: "incorrect password!" });
             }

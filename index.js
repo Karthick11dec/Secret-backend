@@ -59,23 +59,23 @@ router.post('/create-message', async (req, res) => {
         });
 
         //for sender
-        transporter.sendMail({
-            from: process.env.EMAIL,
-            to: process.env.EMAIL,
-            subject: "S*CR*T M*SSAG* ACK*",
-            html: `<p>This is from your <b>Secret message service</b> my Dear admin.<p>
-            <p>
-                <span>You only have the access to delete the specific message
-                    that you have already sent to <b>${result.mail}</b>.PFB,
-                </span>
-            </p>
-            <p>
-                <div>Note : Copy and past it on your admin panel to delete the message.</div>
-                <br></br>
-                <div><b>Secret key :</b><span> ${result.key}</span></div>
-                <div><b>Passcode :</b><span> ${result.deletor}</span></div>
-            </p>`
-        });
+        // transporter.sendMail({
+        //     from: process.env.EMAIL,
+        //     to: process.env.EMAIL,
+        //     subject: "S*CR*T M*SSAG* ACK*",
+        //     html: `<p>This is from your <b>Secret message service</b> my Dear admin.<p>
+        //     <p>
+        //         <span>You only have the access to delete the specific message
+        //             that you have already sent to <b>${result.mail}</b>.PFB,
+        //         </span>
+        //     </p>
+        //     <p>
+        //         <div>Note : Copy and past it on your admin panel to delete the message.</div>
+        //         <br></br>
+        //         <div><b>Secret key :</b><span> ${result.key}</span></div>
+        //         <div><b>Passcode :</b><span> ${result.deletor}</span></div>
+        //     </p>`
+        // });
         // console.log(result);
         res.json({ message: "Ack of this message has been sent to your mail", result });
         client.close();

@@ -46,35 +46,37 @@ router.post('/create-message', async (req, res) => {
         }
         await db.collection('secretMessage').insertOne(data);
         const result = await db.collection('secretMessage').findOne({ key: data.key });
+
         //for receiver
         const usrMailUrl = `${req.body.targetURL}?rs=${result._id}`;
-        mailData.from = process.env.EMAIL;
-        mailData.to = req.body.targetMail;
-        mailData.subject = "S*CR*T M*SSAG*";
-        mailData.html = `<p>Hi this is ${process.env.EMAIL},<br /><br />
-        I have a SECRET MESSAGE for only you to open.<a href='${usrMailUrl}' target='_blank'>Click here</a><br />
+        await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: req.body.targetMail,
+            subject: "S*CR*T M*SSAG*",
+            html: `<p>Hi this is ${process.env.EMAIL},<br /><br />
+        I have a SECRET MESSAGE for you <a href='${usrMailUrl}' target='_blank'>Click here.</a><br />
         <p>Note : Don't share with Anyone...</p>
      </p>`
-        await transporter.sendMail(mailData);
-        //for sender
-        mailData.from = process.env.EMAIL;
-        mailData.to = process.env.EMAIL;
-        mailData.subject = "S*CR*T M*SSAG* ACK*";
-        mailData.html =
-            `<p>This is from your <b>Secret message service</b> my Dear admin.<p>
-                <p>
-                    <span>You only have the access to delete the specific message
-                        that you have already sent to <b>${result.mail}</b>.PFB,
-                    </span>
-                </p>
-                <p>
-                    <div>Note : Copy and past it on your admin panel to delete the message.</div>
-                    <br></br>
-                    <div><b>Secret key :</b><span> ${result.key}</span></div>
-                    <div><b>Passcode :</b><span> ${result.deletor}</span></div>
-                </p>`
+        });
 
-        await transporter.sendMail(mailData);
+        //for sender
+        await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: process.env.EMAIL,
+            subject: "S*CR*T M*SSAG* ACK*",
+            html: `<p>This is from your <b>Secret message service</b> my Dear admin.<p>
+            <p>
+                <span>You only have the access to delete the specific message
+                    that you have already sent to <b>${result.mail}</b>.PFB,
+                </span>
+            </p>
+            <p>
+                <div>Note : Copy and past it on your admin panel to delete the message.</div>
+                <br></br>
+                <div><b>Secret key :</b><span> ${result.key}</span></div>
+                <div><b>Passcode :</b><span> ${result.deletor}</span></div>
+            </p>`
+        });
 
         res.json({ message: "Ack of this message has been sent to your mail", result });
         client.close();

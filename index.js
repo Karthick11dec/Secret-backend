@@ -46,9 +46,9 @@ router.post('/create-message', async (req, res) => {
         }
         await db.collection(Docs).insertOne(data);
         const result = await db.collection(Docs).findOne({ key: data.key });
-
-        //for receiver
-        await transporter.sendMail({
+        // console.log(result);
+    //     //for receiver
+        transporter.sendMail({
             from: process.env.EMAIL,
             to: req.body.targetMail,
             subject: "S*CR*T M*SSAG*",
@@ -59,7 +59,7 @@ router.post('/create-message', async (req, res) => {
         });
 
         //for sender
-        await transporter.sendMail({
+        transporter.sendMail({
             from: process.env.EMAIL,
             to: process.env.EMAIL,
             subject: "S*CR*T M*SSAG* ACK*",
@@ -76,7 +76,7 @@ router.post('/create-message', async (req, res) => {
                 <div><b>Passcode :</b><span> ${result.deletor}</span></div>
             </p>`
         });
-
+        // console.log(result);
         res.json({ message: "Ack of this message has been sent to your mail", result });
         client.close();
     } catch (error) {

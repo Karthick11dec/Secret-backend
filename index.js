@@ -64,7 +64,10 @@ router.post('/create-message', async (req, res) => {
         //for receiver
         const usrMailUrl = `${req.body.targetURL}?rs=${result._id}`;
         mailData.to = req.body.targetMail;
-        mailData.html = mailMessage(usrMailUrl)
+        mailData.html = `<p>Hi this is ${process.env.EMAIL},<br /><br />
+        I have a SECRET MESSAGE for only you to open.<a href='${usrMailUrl}' target='_blank'>Click here</a><br />
+        <p>Note : Don't share with Anyone...</p>
+     </p>`
         await transporter.sendMail(mailData);
         //for sender
         mailData.to = process.env.EMAIL;
@@ -87,7 +90,7 @@ router.post('/create-message', async (req, res) => {
         res.json({ message: "Ack of this message has been sent to your mail", result })
     } catch (error) {
         console.log(error);
-        res.json({message:"Entered mail is not exist."});
+        res.json({ message: "Entered mail is not exist." });
     } finally {
         client.close();
     }
